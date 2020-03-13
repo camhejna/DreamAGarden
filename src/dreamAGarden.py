@@ -1,6 +1,12 @@
-class Garden:
-    def __init__(self):
-        self.name = 'Dream a Garden'
+def runGarden():
+    print('running the garden')
 
-    def myFunc(self):
-        print('Hello, world!')
+    # for each item...
+    # check them,
+    # and add to log file
+    # decide if watering is required
+    # send log to email/server/TBD
+
+if __name__ == '__main__':
+    print('I am main')
+    runGarden()
