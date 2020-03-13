@@ -1,3 +1,6 @@
+"""dreamAGarden - this module receives inputs from sensors
+and decides whether or not to trigger the water pump"""
+
 def runGarden():
     print('running the garden')
     # initialize sensor vars
@@ -10,6 +13,9 @@ def runGarden():
     # send log to email/server/TBD
 
 def needsWater():
+    #check the soil sensor
+    #check the weather
+    #decide
     return True
 
 if __name__ == '__main__':
