@@ -1,6 +1,10 @@
 """dreamAGarden - this module receives inputs from sensors
 and decides whether or not to trigger the water pump"""
 
+# import x from soilMonitor
+# import y from temperatureHumiditySensor
+# import z from waterPump
+
 def runGarden():
     print('running the garden')
     # initialize sensor vars
@@ -14,7 +18,13 @@ def runGarden():
 
 def needsWater():
     #check the soil sensor
+    #soil status = ??
     #check the weather
+    #rain in the forecast = ??
+    #if soilDry and noRainSoon:
+        #return True
+    #else:
+        #return false
     #decide
     return True
 
