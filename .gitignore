@@ -1,5 +1,11 @@
+#vscode config
 /.vscode
 /local
+.markdownlint.json
+
+#python
 src/__pycache__
 *.pyc
+
+#private
 keys.py
