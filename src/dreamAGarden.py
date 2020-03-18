@@ -6,7 +6,7 @@ from datetime import date
 from darksky import forecast
 from Adafruit_IO import Client, Feed, Data
 import keys
-# import x from soilMonitor
+from soilMonitor import readSensor
 # import y from temperatureHumiditySensor
 # import z from waterPump
 
