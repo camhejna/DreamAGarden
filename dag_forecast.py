@@ -1,7 +1,5 @@
-"""frostForecast - because frost forecasting requires a large number
-of API calls to darksky, this needs to be run seperately from 
-dreamAGarden.runGarden().
-"""
+'''Dream A Garden: Forecast - module to handle all API calls to the
+DarkSky API'''
 
 from datetime import datetime as dt
 from datetime import timedelta
@@ -9,18 +7,26 @@ from datetime import date
 from darksky import forecast
 import keys
 
+mDSK = keys.darksky
 mDaysToForecast = 60
 
 def ffMain():
     daysForecast = retrieveFutureForecast(42.2613, -78.6580, 60)
 
+def retrieveForecast(latitude, longitude):
+    return forecast(mDSK, latitude, longitude)
+
 def retrieveFutureForecast(latitude, longitude, daysToForecast):
+    '''makes a time machine API request for the given latitude,
+    longitude and for the number of days to forecast up to 60
+    (Dark Sky Time Machine maximum).'''
+
     if daysToForecast > 60:
         mDaysToForecast = 60
     else:
         mDaysToForecast = daysToForecast
     today = date.today()
-    location = keys.darksky, latitude, longitude
+    location = mDSK, latitude, longitude
     daysForecast = {}
     for i in range(mDaysToForecast):
         dateF = today + timedelta(days=i)
@@ -32,13 +38,6 @@ def retrieveFutureForecast(latitude, longitude, daysToForecast):
             raise ValueError
         finally:
             pass
-        #print(i)
-        #print((dt(today.year, today.month, today.day+i, 0)).isoformat())
-        #day = forecast(*location, time=(dt(today.year, today.month, today.day+i, 0).isoformat()))
-        #next30Days.append(day['daily']['data'][0]['temperatureLow'])
-        #print(day['daily']['data'][0]['temperatureLow'])
-        #if(day['daily']['data'][0]['temperatureLow'] < 30):
-        #    upcomingFrost = True
     return daysForecast
 
 def findFirstFrost(daysForecast):
@@ -62,4 +61,6 @@ def findLastFrost(daysForecast):
         pass
 
 if __name__ == '__main__':
+    import sys
+    #ffMain(float(sys.argv[1]), float(sys.argv[2]), int(sys.argv[3]))
     ffMain()

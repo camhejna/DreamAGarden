@@ -1,14 +1,14 @@
-"""dreamAGarden - this module receives inputs from sensors
-and decides whether or not to trigger the water pump"""
+'''dreamAGarden - this module receives inputs from sensors
+and decides whether or not to trigger the water pump'''
 
 from datetime import datetime as dt
 from datetime import date
 from darksky import forecast
 from Adafruit_IO import Client, Feed, Data
-import keys
 from soilMonitor import readSensor
 # import y from temperatureHumiditySensor
 # import z from waterPump
+import keys
 
 #module vars
 aio = Client(keys.adausr, keys.adafruit)
@@ -17,6 +17,11 @@ evl = keys.darksky, 42.2613, -78.6580
 today = date.today()
 
 def runGarden():
+    '''runs through all the components of the garden and
+    decides whether or not to water the garden. It also
+    pushes the execution datetime to the Adafruit IO feed for 
+    Last Execution'''
+
     feeds = aio.feeds()
     feedKeys = []
     for f in feeds:
@@ -42,6 +47,7 @@ def runGarden():
     # send log to email/server/TBD
 
 def needsWater():
+    #TODO: refactor to account for dag_forecast handling all DarkSky API calls
     print('checking the weather')
     evlNow = forecast(*evl)
     print(evlNow['currently']['precipProbability'])
@@ -77,7 +83,6 @@ def forecastFrost():
         if(day['daily']['data'][0]['temperatureLow'] < 30):
             upcomingFrost = True
     return upcomingFrost
-
 
 def weatherCheck(darkskyLoc):
     print('hello')
