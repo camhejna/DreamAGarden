@@ -11,13 +11,19 @@ mDSK = keys.darksky
 mDaysToForecast = 60
 
 def ffMain():
-    daysForecast = retrieveFutureForecast(42.2613, -78.6580, 60)
+    daysForecast = retrieveFutureForecast(42.2613, -78.6580, 2)
 
 def retrieveForecast(latitude, longitude):
-    return forecast(mDSK, latitude, longitude)
+    '''Returns a Dark Sky Forecast Request for the given coordinates.
+    Throws an IOError.'''
+
+    try:
+        return forecast(mDSK, latitude, longitude)
+    except IOError as e:
+        raise e
 
 def retrieveFutureForecast(latitude, longitude, daysToForecast):
-    '''makes a time machine API request for the given latitude,
+    '''Returns a Dark Sky Time Machine Request for the given latitude,
     longitude and for the number of days to forecast up to 60
     (Dark Sky Time Machine maximum).'''
 
@@ -25,17 +31,17 @@ def retrieveFutureForecast(latitude, longitude, daysToForecast):
         mDaysToForecast = 60
     else:
         mDaysToForecast = daysToForecast
-    today = date.today()
+    today = dt.today()
     location = mDSK, latitude, longitude
     daysForecast = {}
     for i in range(mDaysToForecast):
-        dateF = today + timedelta(days=i)
+        dateF = (today + timedelta(days=i)).isoformat(timespec='seconds')
         try:
-            frost = forecast(*location, time=dateF.isoformat())
+            frost = forecast(*location, time=dateF)
             daysForecast[dateF] = frost
         except Exception as e:
             #throw exception for bad values (lat/long)
-            raise ValueError
+            raise e
         finally:
             pass
     return daysForecast
@@ -44,8 +50,7 @@ def findFirstFrost(daysForecast):
     try:
         for date, forecast in daysForecast.items():
             if(forecast['daily']['data'][0]['temperatureLow'] <= 35):
-                firstFrost = date
-                return firstFrost
+                return date
         return
     except Exception as e:
         pass
@@ -54,8 +59,7 @@ def findLastFrost(daysForecast):
     try:
         for date in reversed(daysForecast):
             if(daysForecast[date]['daily']['data'][0]['temperatureLow'] <= 35):
-                lastFrost = date
-                return lastFrost
+                return date
         return
     except Exception as e:
         pass
@@ -63,4 +67,42 @@ def findLastFrost(daysForecast):
 if __name__ == '__main__':
     import sys
     #ffMain(float(sys.argv[1]), float(sys.argv[2]), int(sys.argv[3]))
-    ffMain()
+    #ffMain()
+    mTestFistFrost = {
+        '2020-01-01T00:00:00' : {
+            'daily' : {
+                'data' : [
+                    {'temperatureLow' : 40}
+                ]
+            }
+        },
+        '2020-01-02T00:00:00' : {
+            'daily' : {
+                'data' : [
+                    {'temperatureLow' : 39}
+                ]
+            }
+        },
+        '2020-01-03T00:00:00' : {
+            'daily' : {
+                'data' : [
+                    {'temperatureLow' : 41}
+                ]
+            }
+        },
+        '2020-01-04T00:00:00' : {
+            'daily' : {
+                'data' : [
+                    {'temperatureLow' : 32}
+                ]
+            }
+        },
+        '2020-01-05T00:00:00' : {
+            'daily' : {
+                'data' : [
+                    {'temperatureLow' : 45}
+                ]
+            }
+        }
+    }
+    findLastFrost(mTestFistFrost)

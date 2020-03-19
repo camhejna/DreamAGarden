@@ -1,6 +1,7 @@
 # **Dream A Garden** #
 
 ![version]
+![python-version]
 
 Another IOT Garden. Built on a Raspberry Pi. [Powered by Dark Sky](https://darksky.net/poweredby/).
 
@@ -43,3 +44,4 @@ library for the [Adafruit IO API](https://io.adafruit.com/api/docs/#adafruit-io-
 * [Raspberry Pi SSH for MacOS](https://www.raspberrypi.org/documentation/remote-access/ssh/unix.md)
 
 [version]: https://img.shields.io/badge/v-0.1-blue
+[python-version]: https://img.shields.io/badge/python-3.8.2-yellow
