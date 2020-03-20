@@ -69,14 +69,13 @@ class Garden():
         lastFrost = dag_forecast.findLastFrost(
                 self._parameters['latitude'],
                 self._parameters['longitude'])
-        if self.feedKeys['Last Frost']:
+        if self.feedKeys['Last Frost'] and lastFrost:
             logLastFrost = ('location":{0},"latitude":{1},"longitude":{2},"frostDate":{3}').format(
                 self._parameters['location'],
                 self._parameters['latitude'],
                 self._parameters['longitude'],
                 lastFrost)
             logLastFrost = '{'+logLastFrost+'}'
-            print(logLastFrost)
             lfData=Data(value=logLastFrost)
             dag_adafruit.createData(self.feedKeys['Last Frost'], lfData)
         return lastFrost
@@ -85,14 +84,13 @@ class Garden():
         firstFrost = dag_forecast.findFirstFrost(
                 self._parameters['latitude'],
                 self._parameters['longitude'])
-        if self.feedKeys['First Frost']:
+        if self.feedKeys['First Frost'] and firstFrost:
             logFirstFrost = ('location":{0},"latitude":{1},"longitude":{2},"frostDate":{3}').format(
                 self._parameters['location'],
                 self._parameters['latitude'],
                 self._parameters['longitude'],
                 firstFrost)
             logFirstFrost = '{'+logFirstFrost+'}'
-            print(logFirstFrost)
             lfData=Data(value=logFirstFrost)
             dag_adafruit.createData(self.feedKeys['First Frost'], lfData)
         return firstFrost
