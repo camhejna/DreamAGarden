@@ -38,7 +38,6 @@ class Garden():
     def runGarden(self):
         """runs through all the components of the garden and
         decides whether or not to water the garden."""
-        
         feeds = dag_adafruit.getFeeds()
         feedKeys = []
         for f in feeds:
@@ -66,11 +65,11 @@ class Garden():
     def needsWater(self):
         pass
 
-    def logLastFrost(self):
-        if self.feedKeys['Last Frost']:
-            lastFrost = dag_forecast.findLastFrost(
+    def findLastFrost(self):
+        lastFrost = dag_forecast.findLastFrost(
                 self._parameters['latitude'],
                 self._parameters['longitude'])
+        if self.feedKeys['Last Frost']:
             logLastFrost = ('location":{0},"latitude":{1},"longitude":{2},"frostDate":{3}').format(
                 self._parameters['location'],
                 self._parameters['latitude'],
@@ -80,11 +79,28 @@ class Garden():
             print(logLastFrost)
             lfData=Data(value=logLastFrost)
             dag_adafruit.createData(self.feedKeys['Last Frost'], lfData)
+        return lastFrost
+    
+    def findFirstFrost(self):
+        firstFrost = dag_forecast.findFirstFrost(
+                self._parameters['latitude'],
+                self._parameters['longitude'])
+        if self.feedKeys['First Frost']:
+            logFirstFrost = ('location":{0},"latitude":{1},"longitude":{2},"frostDate":{3}').format(
+                self._parameters['location'],
+                self._parameters['latitude'],
+                self._parameters['longitude'],
+                firstFrost)
+            logFirstFrost = '{'+logFirstFrost+'}'
+            print(logFirstFrost)
+            lfData=Data(value=logFirstFrost)
+            dag_adafruit.createData(self.feedKeys['First Frost'], lfData)
+        return firstFrost
         
 
 if __name__ == '__main__':
     import sys
     garden = Garden(float(sys.argv[1]), float(sys.argv[2]), str(sys.argv[3]))
     #print(garden)
-    garden.logLastFrost()
+    garden.findFirstFrost()
     #forecastFrost()
