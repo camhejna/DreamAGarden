@@ -96,15 +96,15 @@ class dag_forecastTest(unittest.TestCase):
         self.assertEqual(self.mTestDays, len(forecast))
     '''
     def test_retrieveFutureForecast_moreThanSixtyDays(self):
-        forecast = dag_forecast.retrieveFutureForecast(self.mTestLat, self.mTestLon, 61)
-        self.assertEqual(60, len(forecast))
+        forecast = dag_forecast.retrieveFutureForecast(self.mTestLat, self.mTestLon, 11)
+        self.assertEqual(10, len(forecast))
     '''
 
-    def test_findFirstFront(self):
-        firstFrost = dag_forecast.findFirstFrost(self.mTestFistFrost)
+    def test__findFirstFront(self):
+        firstFrost = dag_forecast._findFirstFrost(self.mTestFistFrost)
         self.assertEqual('2020-01-04T00:00:00', firstFrost)
 
-    def test_findLastFrost(self):
-        lastFrost = dag_forecast.findLastFrost(self.mTestLastFrost)
+    def test__findLastFrost(self):
+        lastFrost = dag_forecast._findLastFrost(self.mTestLastFrost)
         self.assertEqual('2020-01-04T00:00:00', lastFrost)
         

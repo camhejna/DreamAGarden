@@ -8,10 +8,12 @@ from darksky import forecast
 import keys
 
 mDSK = keys.darksky
-mDaysToForecast = 60
+mDaysToForecast = 10
+mTimeMachineMax = 10
 
 def ffMain():
-    daysForecast = retrieveFutureForecast(42.2613, -78.6580, 2)
+    #daysForecast = retrieveFutureForecast(42.2613, -78.6580, 2)
+    pass
 
 def retrieveForecast(latitude, longitude):
     '''Returns a Dark Sky Forecast Request for the given coordinates.
@@ -27,8 +29,8 @@ def retrieveFutureForecast(latitude, longitude, daysToForecast):
     longitude and for the number of days to forecast up to 60
     (Dark Sky Time Machine maximum).'''
 
-    if daysToForecast > 60:
-        mDaysToForecast = 60
+    if daysToForecast > mTimeMachineMax:
+        mDaysToForecast = mTimeMachineMax
     else:
         mDaysToForecast = daysToForecast
     today = dt.today()
@@ -46,63 +48,35 @@ def retrieveFutureForecast(latitude, longitude, daysToForecast):
             pass
     return daysForecast
 
-def findFirstFrost(daysForecast):
+def _findFirstFrost(daysForecast):
     try:
         for date, forecast in daysForecast.items():
-            if(forecast['daily']['data'][0]['temperatureLow'] <= 35):
+            if(forecast['daily']['data'][0]['temperatureMin'] <= 35):
                 return date
         return
     except Exception as e:
-        pass
+        raise e
 
-def findLastFrost(daysForecast):
+def findFirstFrost(latitude, longitude):
+    '''Given a latitude and longitude, return the first frost date
+    for the next 10 days, or none if there is no frost in that range'''
+    return _findFirstFrost(retrieveFutureForecast(latitude, longitude, mTimeMachineMax))
+
+def _findLastFrost(daysForecast):
     try:
-        for date in reversed(daysForecast):
-            if(daysForecast[date]['daily']['data'][0]['temperatureLow'] <= 35):
+        for date in reversed(daysForecast.keys()):
+            if(daysForecast[date]['daily']['data'][0]['temperatureMin'] <= 35):
                 return date
         return
     except Exception as e:
-        pass
+        raise e
+
+def findLastFrost(latitude, longitude):
+    '''Given a latitude and longitude, returns the last frost date
+    for the next 10 days, or none is there is no frost in that range.'''
+    return _findLastFrost(retrieveFutureForecast(latitude, longitude, mTimeMachineMax))
 
 if __name__ == '__main__':
     import sys
-    #ffMain(float(sys.argv[1]), float(sys.argv[2]), int(sys.argv[3]))
-    #ffMain()
-    mTestFistFrost = {
-        '2020-01-01T00:00:00' : {
-            'daily' : {
-                'data' : [
-                    {'temperatureLow' : 40}
-                ]
-            }
-        },
-        '2020-01-02T00:00:00' : {
-            'daily' : {
-                'data' : [
-                    {'temperatureLow' : 39}
-                ]
-            }
-        },
-        '2020-01-03T00:00:00' : {
-            'daily' : {
-                'data' : [
-                    {'temperatureLow' : 41}
-                ]
-            }
-        },
-        '2020-01-04T00:00:00' : {
-            'daily' : {
-                'data' : [
-                    {'temperatureLow' : 32}
-                ]
-            }
-        },
-        '2020-01-05T00:00:00' : {
-            'daily' : {
-                'data' : [
-                    {'temperatureLow' : 45}
-                ]
-            }
-        }
-    }
-    findLastFrost(mTestFistFrost)
+    lf = findLastFrost(47.0000, -78.0000)
+    print(lf)

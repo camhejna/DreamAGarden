@@ -8,86 +8,71 @@ from Adafruit_IO import Client, Feed, Data
 from soilMonitor import readSensor
 # import y from temperatureHumiditySensor
 # import z from waterPump
+import dag_adafruit
+import dag_forecast
 import keys
 
 #module vars
-aio = Client(keys.adausr, keys.adafruit)
-dag = 'dream-a-garden.'
-evl = keys.darksky, 42.2613, -78.6580
-today = date.today()
+#aio = Client(keys.adausr, keys.adafruit)
+#dag = 'dream-a-garden.'
+#evl = keys.darksky, 42.2613, -78.6580
+#today = date.today()
 
-def runGarden():
-    '''runs through all the components of the garden and
-    decides whether or not to water the garden. It also
-    pushes the execution datetime to the Adafruit IO feed for 
-    Last Execution'''
+class Garden():
 
-    feeds = aio.feeds()
-    feedKeys = []
-    for f in feeds:
-        feedKeys.append(f.key)
-        #print('Feed: {0}, key: {1}'.format(f.name,f.key))
-    leKey = dag + 'last-execution'
-    if leKey in feedKeys:
-        lastExecution = Data(value=((dt.now()).isoformat()))
-        aio.create_data(leKey, lastExecution)
-        #TODO: log success
-    else:
-        #TODO: log error
-        print('could not find LE feed')
-    print('running the garden')
-    # initialize sensor vars
-    # for each item...
-    # check them,
-    
-    # and add to log file
-    # decide if watering is required
-    if needsWater():
-        print('watering the garden')
-    # send log to email/server/TBD
+    def __init__(self, latitude, longitude, location='N/A'):
+        self._parameters = dict(latitude=latitude, longitude=longitude, location=location)
+        self.dag='dream-a-garden'
 
-def needsWater():
-    #TODO: refactor to account for dag_forecast handling all DarkSky API calls
-    print('checking the weather')
-    evlNow = forecast(*evl)
-    print(evlNow['currently']['precipProbability'])
-    retVal = False
-    try:
-        retVal = (evlNow['currently']['precipProbability'] > 0.3)
-    except TypeError as te:
-        print('typeError')
-        print(te)
-        #log te
-    finally:
-        return retVal 
-    #check the soil sensor
-    #soil status = ??
-    #check the weather
-    #rain in the forecast = ??
-    #if soilDry and noRainSoon:
-        #return True
-    #else:
-        #return false
-    #decide
-    #return True
+    def runGarden(self):
+        '''runs through all the components of the garden and
+        decides whether or not to water the garden. It also
+        pushes the execution datetime to the Adafruit IO feed for 
+        Last Execution'''
 
-def forecastFrost():
-    upcomingFrost = False
-    #next30Days = []
-    for i in range(30):
-        print(i)
-        print((dt(today.year, today.month, today.day+i, 0)).isoformat())
-        day = forecast(*evl, time=(dt(today.year, today.month, today.day+i, 0).isoformat()))
-        #next30Days.append(day['daily']['data'][0]['temperatureLow'])
-        print(day['daily']['data'][0]['temperatureLow'])
-        if(day['daily']['data'][0]['temperatureLow'] < 30):
-            upcomingFrost = True
-    return upcomingFrost
+        feeds = dag_adafruit.getFeeds()
+        feedKeys = []
+        for f in feeds:
+            feedKeys.append(f.key)
+            #print('Feed: {0}, key: {1}'.format(f.name,f.key))
+        leKey = self.dag + 'last-execution'
+        if leKey in feedKeys:
+            lastExecution = Data(value=((dt.now()).isoformat()))
+            dag_adafruit.createData(leKey, lastExecution)
+            #TODO: log success
+        else:
+            #TODO: log error
+            print('could not find LE feed')
+        print('running the garden')
+        # initialize sensor vars
+        # for each item...
+        # check them,
+        
+        # and add to log file
+        # decide if watering is required
+        if self.needsWater():
+            print('watering the garden')
+        # send log to email/server/TBD
 
-def weatherCheck(darkskyLoc):
-    print('hello')
+    def needsWater(self):
+        pass
+
+    def logLastFrost(self):
+        lastFrost = dag_forecast.findLastFrost
+        logLastFrost = '''{ "location":{0},
+                        "latitude":{1}
+                        "longitude":{2}
+                        "frostDate":{3}'''
+        logLastFrost.format(
+            self._parameters['location'],
+            self._parameters['latitude'],
+            self._parameters['longitude'],
+            lastFrost)
+        dag_adafruit.createData((self.dag+'last-frost'), logLastFrost)
+        
 
 if __name__ == '__main__':
-    print('I am main')
-    runGarden()
+    import sys
+    garden = Garden(float(sys.argv[1]), float(sys.argv[2]), str(sys.argv[3]))
+    print(garden)
     #forecastFrost()
