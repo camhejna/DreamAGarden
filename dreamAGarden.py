@@ -5,7 +5,7 @@ from datetime import datetime as dt
 from datetime import date
 from darksky import forecast
 from Adafruit_IO import Client, Feed, Data
-from soilMonitor import readSensor
+#from soilMonitor import readSensor
 # import y from temperatureHumiditySensor
 # import z from waterPump
 import dag_adafruit
@@ -59,7 +59,7 @@ class Garden():
 
     def logLastFrost(self):
         lastFrost = dag_forecast.findLastFrost
-        logLastFrost = '''{ "location":{0},
+        logLastFrost = '''"location":{0},
                         "latitude":{1}
                         "longitude":{2}
                         "frostDate":{3}'''
@@ -68,6 +68,7 @@ class Garden():
             self._parameters['latitude'],
             self._parameters['longitude'],
             lastFrost)
+        logLastFrost = '{'+logLastFrost+'}'
         dag_adafruit.createData((self.dag+'last-frost'), logLastFrost)
         
 
@@ -75,4 +76,5 @@ if __name__ == '__main__':
     import sys
     garden = Garden(float(sys.argv[1]), float(sys.argv[2]), str(sys.argv[3]))
     print(garden)
+    garden.logLastFrost()
     #forecastFrost()
