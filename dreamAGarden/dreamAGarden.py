@@ -33,7 +33,7 @@ class Garden():
         Adafruit IO feed."""
         if self.feedKeys['Last Execution']:
             lastExecution = Data(value=((dt.now()).isoformat(timespec='seconds')))
-            dag_adafruit.sendData(self.feedKeys['Last Execution'], lastExecution)
+            dag_adafruit.createData(self.feedKeys['Last Execution'], lastExecution)
 
     def runGarden(self):
         """runs through all the components of the garden and
@@ -79,7 +79,7 @@ class Garden():
             logLastFrost = '{'+logLastFrost+'}'
             print(logLastFrost)
             lfData=Data(value=logLastFrost)
-            dag_adafruit.sendData(self.feedKeys['Last Frost'], lfData)
+            dag_adafruit.createData(self.feedKeys['Last Frost'], lfData)
         
 
 if __name__ == '__main__':
