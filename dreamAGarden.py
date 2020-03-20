@@ -20,29 +20,38 @@ import keys
 
 class Garden():
 
-    def __init__(self, latitude, longitude, location='N/A'):
+    def __init__(self, latitude, longitude, location='N/A'): 
+        #TODO:fix inconsistency in class vars here
         self._parameters = dict(latitude=latitude, longitude=longitude, location=location)
-        self.dag='dream-a-garden'
+        self.feedKeys = {}
+        for f in dag_adafruit.getFeeds():
+            self.feedKeys[f.name] = f.key
+        self.logLastExecution()
+
+    def logLastExecution(self):
+        """Logs the last execution of this method to the relevant
+        Adafruit IO feed."""
+        if self.feedKeys['Last Execution']:
+            lastExecution = Data(value=((dt.now()).isoformat(timespec='seconds')))
+            dag_adafruit.sendData(self.feedKeys['Last Execution'], lastExecution)
 
     def runGarden(self):
-        '''runs through all the components of the garden and
-        decides whether or not to water the garden. It also
-        pushes the execution datetime to the Adafruit IO feed for 
-        Last Execution'''
-
+        """runs through all the components of the garden and
+        decides whether or not to water the garden."""
+        
         feeds = dag_adafruit.getFeeds()
         feedKeys = []
         for f in feeds:
             feedKeys.append(f.key)
             #print('Feed: {0}, key: {1}'.format(f.name,f.key))
-        leKey = self.dag + 'last-execution'
-        if leKey in feedKeys:
-            lastExecution = Data(value=((dt.now()).isoformat()))
-            dag_adafruit.createData(leKey, lastExecution)
+        #leKey = self.dag + 'last-execution'
+        #if leKey in feedKeys:
+        #    lastExecution = Data(value=((dt.now()).isoformat()))
+        #    dag_adafruit.sendData(leKey, lastExecution)
             #TODO: log success
-        else:
+        #else:
             #TODO: log error
-            print('could not find LE feed')
+        #    print('could not find LE feed')
         print('running the garden')
         # initialize sensor vars
         # for each item...
@@ -58,23 +67,24 @@ class Garden():
         pass
 
     def logLastFrost(self):
-        lastFrost = dag_forecast.findLastFrost
-        logLastFrost = '''"location":{0},
-                        "latitude":{1}
-                        "longitude":{2}
-                        "frostDate":{3}'''
-        logLastFrost.format(
-            self._parameters['location'],
-            self._parameters['latitude'],
-            self._parameters['longitude'],
-            lastFrost)
-        logLastFrost = '{'+logLastFrost+'}'
-        dag_adafruit.createData((self.dag+'last-frost'), logLastFrost)
+        if self.feedKeys['Last Frost']:
+            lastFrost = dag_forecast.findLastFrost(
+                self._parameters['latitude'],
+                self._parameters['longitude'])
+            logLastFrost = ('location":{0},"latitude":{1},"longitude":{2},"frostDate":{3}').format(
+                self._parameters['location'],
+                self._parameters['latitude'],
+                self._parameters['longitude'],
+                lastFrost)
+            logLastFrost = '{'+logLastFrost+'}'
+            print(logLastFrost)
+            lfData=Data(value=logLastFrost)
+            dag_adafruit.sendData(self.feedKeys['Last Frost'], lfData)
         
 
 if __name__ == '__main__':
     import sys
     garden = Garden(float(sys.argv[1]), float(sys.argv[2]), str(sys.argv[3]))
-    print(garden)
+    #print(garden)
     garden.logLastFrost()
     #forecastFrost()

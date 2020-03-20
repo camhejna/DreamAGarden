@@ -16,8 +16,10 @@ def ffMain():
     pass
 
 def retrieveForecast(latitude, longitude):
-    '''Returns a Dark Sky Forecast Request for the given coordinates.
-    Throws an IOError.'''
+    """Returns a Dark Sky Forecast Request for the given coordinates.
+    Throws an IOError.
+    :param float latitude: latitude of position.
+    :param float longitude: longitude of position."""
 
     try:
         return forecast(mDSK, latitude, longitude)
@@ -25,9 +27,12 @@ def retrieveForecast(latitude, longitude):
         raise e
 
 def retrieveFutureForecast(latitude, longitude, daysToForecast):
-    '''Returns a Dark Sky Time Machine Request for the given latitude,
-    longitude and for the number of days to forecast up to 60
-    (Dark Sky Time Machine maximum).'''
+    """Returns a Dark Sky Time Machine Request for the given latitude,
+    longitude and for the number of days to forecast up to 10
+    (Dark Sky Time Machine maximum).
+    :param float latitude: latitude of position.
+    :param float longitude: longitude of position.
+    :param int daysToForecast: number of days to forecast. Integers greater than 10 will be set to 10."""
 
     if daysToForecast > mTimeMachineMax:
         mDaysToForecast = mTimeMachineMax
@@ -58,8 +63,10 @@ def _findFirstFrost(daysForecast):
         raise e
 
 def findFirstFrost(latitude, longitude):
-    '''Given a latitude and longitude, return the first frost date
-    for the next 10 days, or none if there is no frost in that range'''
+    """Given a latitude and longitude, return the first frost date
+    for the next 10 days, or none if there is no frost in that range
+    :param float latitude: latitude of position.
+    :param float longitude: longitude of position."""
     return _findFirstFrost(retrieveFutureForecast(latitude, longitude, mTimeMachineMax))
 
 def _findLastFrost(daysForecast):

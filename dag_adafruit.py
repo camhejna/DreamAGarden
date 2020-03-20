@@ -6,7 +6,7 @@ import keys
 
 mAIO = Client(keys.adausr, keys.adafruit)
 
-def createData(feed, data):
+def sendData(feed, data):
     try:
         mAIO.create_data(feed, data)
     except Exception as e:
