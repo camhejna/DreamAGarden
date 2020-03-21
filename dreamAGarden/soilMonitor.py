@@ -16,3 +16,16 @@ def readSensor():
 
     retval = {'touch':touch, 'temp':temp}
     return retval
+
+def soilDry():
+    if readSensor()['touch'] < 300:
+        return True
+    else:
+        return False
+
+def soilCold():
+    if readSensor()['temp'] < 36:
+        return True
+    else:
+        return False
+        
