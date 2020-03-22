@@ -9,7 +9,8 @@ from Adafruit_IO import Client, Feed, Data
 # import y from temperatureHumiditySensor
 # import z from waterPump
 import dag_adafruit
-import dag_forecast
+from dag_forecast import DAG_Forecast
+from dag_garden import DAG_Garden
 import keys
 
 #module vars
@@ -23,12 +24,12 @@ class Garden():
     def __init__(self, latitude, longitude, location='N/A'): 
         #TODO:fix inconsistency in class vars here
         self._parameters = dict(latitude=latitude, longitude=longitude, location=location)
+        self.forecast = DAG_Forecast(self._parameters['latitude'],self._parameters['longitude'])
         self.feedKeys = {}
         for f in dag_adafruit.getFeeds():
             self.feedKeys[f.name] = f.key
-        self.logLastExecution()
 
-    def logLastExecution(self):
+    def _logLastExecution(self):
         """Logs the last execution of this method to the relevant
         Adafruit IO feed."""
         if self.feedKeys['Last Execution']:
@@ -38,37 +39,43 @@ class Garden():
     def runGarden(self):
         """runs through all the components of the garden and
         decides whether or not to water the garden."""
-        feeds = dag_adafruit.getFeeds()
-        feedKeys = []
-        for f in feeds:
-            feedKeys.append(f.key)
-            #print('Feed: {0}, key: {1}'.format(f.name,f.key))
-        #leKey = self.dag + 'last-execution'
-        #if leKey in feedKeys:
-        #    lastExecution = Data(value=((dt.now()).isoformat()))
-        #    dag_adafruit.sendData(leKey, lastExecution)
-            #TODO: log success
-        #else:
-            #TODO: log error
-        #    print('could not find LE feed')
-        print('running the garden')
         # initialize sensor vars
-        # for each item...
-        # check them,
-        
-        # and add to log file
-        # decide if watering is required
-        if self.needsWater():
+        #TODO: Sensors
+        weatherConditions = {
+            'precipProbability':self.forecast.dailyPrecipProbability
+        }
+        soilConditions = {
+            'moisture':300, #TODO: replace w/ actual AIO info
+            'temperature':40
+        }
+        fwc = {
+
+        }
+        g = DAG_Garden(
+            weatherConditions,
+            soilConditions,
+            futureWeatherConditions=fwc
+        )
+        if g.needsWatering():
             print('watering the garden')
         # send log to email/server/TBD
 
+        # FOR TESTING IN DEVELOPMENT
+        print(('First frost: {0}').format(self.findFirstFrost()))
+        print(('Last frost: {0}').format(self.findLastFrost()))
+
+        self._logLastExecution()
+        print('\nEnd of Garden\n\n\n----------------------------------------------------------\n\n')
+
     def needsWater(self):
-        pass
+        if self.forecast.dailyPrecipProbability > 0.50:
+            return False
+        else:
+            return True
+
 
     def findLastFrost(self):
-        lastFrost = dag_forecast.findLastFrost(
-                self._parameters['latitude'],
-                self._parameters['longitude'])
+        lastFrost = self.forecast.findLastFrost()
         if self.feedKeys['Last Frost'] and lastFrost:
             logLastFrost = ('location":{0},"latitude":{1},"longitude":{2},"frostDate":{3}').format(
                 self._parameters['location'],
@@ -81,9 +88,7 @@ class Garden():
         return lastFrost
     
     def findFirstFrost(self):
-        firstFrost = dag_forecast.findFirstFrost(
-                self._parameters['latitude'],
-                self._parameters['longitude'])
+        firstFrost = self.forecast.findFirstFrost()
         if self.feedKeys['First Frost'] and firstFrost:
             logFirstFrost = ('location":{0},"latitude":{1},"longitude":{2},"frostDate":{3}').format(
                 self._parameters['location'],
@@ -99,6 +104,7 @@ class Garden():
 if __name__ == '__main__':
     import sys
     garden = Garden(float(sys.argv[1]), float(sys.argv[2]), str(sys.argv[3]))
+    garden.runGarden()
     #print(garden)
     garden.findFirstFrost()
     #forecastFrost()
