@@ -25,7 +25,10 @@ pip3 install -r requirements-dev.txt
 the [Dark Sky API](https://darksky.net/dev/docs).
 
 * [Adafruit IO](https://github.com/adafruit/Adafruit_IO_Python) - a python
-library for the [Adafruit IO API](https://io.adafruit.com/api/docs/#adafruit-io-http-api).
+library for the
+[Adafruit IO API](https://io.adafruit.com/api/docs/#adafruit-io-http-api).
+See the [documentation](https://adafruit-io-python-client.readthedocs.io/en/latest/index.html)
+ for more information.
 
 * [Adafruit Seesaw](https://github.com/adafruit/Adafruit_CircuitPython_seesaw)
 
