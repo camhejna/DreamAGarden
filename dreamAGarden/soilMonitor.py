@@ -16,3 +16,7 @@ def readSensor():
 
     retval = {'touch':touch, 'temp':temp}
     return retval
+
+if __name__ == '__main__':
+    print('temp: '+readSensor()['temp']+', moisture: '+readSensor()['touch'])
+    
