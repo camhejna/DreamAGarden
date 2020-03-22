@@ -54,35 +54,5 @@ class DAG_Forecast():
         instance coordinates."""
         return self.retrieveForecast()['daily']['data'][0]['precipProbability']
 
-    def _findFirstFrost(self, daysForecast):
-        try:
-            for date, forecast in daysForecast.items():
-                if(forecast['daily']['data'][0]['temperatureMin'] <= 35):
-                    return date
-            return
-        except Exception as e:
-            raise e
-
-    def findFirstFrost(self):
-        """Given a latitude and longitude, return the first frost date
-        for the next 10 days, or none if there is no frost in that range
-        :param float latitude: latitude of position.
-        :param float longitude: longitude of position."""
-        return self._findFirstFrost(self.retrieveFutureForecast())
-
-    def _findLastFrost(self, daysForecast):
-        try:
-            for date in reversed(daysForecast.keys()):
-                if(daysForecast[date]['daily']['data'][0]['temperatureMin'] <= 35):
-                    return date
-            return
-        except Exception as e:
-            raise e
-
-    def findLastFrost(self):
-        '''Given a latitude and longitude, returns the last frost date
-        for the next 10 days, or none is there is no frost in that range.'''
-        return self._findLastFrost(self.retrieveFutureForecast())
-
 if __name__ == '__main__':
     import sys

@@ -6,6 +6,7 @@ class dag_forecastTest(unittest.TestCase):
     mTestLat = 0.0000
     mTestLon = 0.0000
     mTestDays = 3
+    """
     mTestFistFrost = {
         '2020-01-01T00:00:00' : {
             'daily' : {
@@ -80,6 +81,7 @@ class dag_forecastTest(unittest.TestCase):
             }
         }
     }
+    """
 
     def test_retrieveForecast(self):
         df = DAG_Forecast(self.mTestLat, self.mTestLon)
@@ -102,14 +104,4 @@ class dag_forecastTest(unittest.TestCase):
         forecast = dag_forecast.retrieveFutureForecast(self.mTestLat, self.mTestLon, 11)
         self.assertEqual(10, len(forecast))
     '''
-
-    def test__findFirstFront(self):
-        df = DAG_Forecast(self.mTestLat, self.mTestLon)
-        firstFrost = df._findFirstFrost(self.mTestFistFrost)
-        self.assertEqual('2020-01-04T00:00:00', firstFrost)
-
-    def test__findLastFrost(self):
-        df = DAG_Forecast(self.mTestLat, self.mTestLon)
-        lastFrost = df._findLastFrost(self.mTestLastFrost)
-        self.assertEqual('2020-01-04T00:00:00', lastFrost)
         

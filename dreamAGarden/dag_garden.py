@@ -47,9 +47,10 @@ class DAG_Garden():
 
     def findLastFrost(self):
         if(self.futureWeatherConditions):
-            for date in reversed(self.futureWeatherConditions):
-                if(self.futureWeatherConditions[date['temperature']] <= 35):
-                    return date
+            for date,forecast in self.futureWeatherConditions.items():
+                if(forecast['temperature'] <= 35):
+                    rDate = date
+                return rDate 
             return
         else:
             raise ValueError
