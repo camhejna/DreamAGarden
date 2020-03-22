@@ -48,9 +48,7 @@ class Garden():
             'moisture':300, #TODO: replace w/ actual AIO info
             'temperature':40
         }
-        fwc = {
-
-        }
+        fwc = self.forecast.retrieveFutureForecast
         g = DAG_Garden(
             weatherConditions,
             soilConditions,
@@ -61,8 +59,8 @@ class Garden():
         # send log to email/server/TBD
 
         # FOR TESTING IN DEVELOPMENT
-        print(('First frost: {0}').format(self.findFirstFrost()))
-        print(('Last frost: {0}').format(self.findLastFrost()))
+        print(('First frost: {0}').format(self.findFirstFrost(g)))
+        print(('Last frost: {0}').format(self.findLastFrost(g)))
 
         self._logLastExecution()
         print('\nEnd of Garden\n\n\n----------------------------------------------------------\n\n')
@@ -73,22 +71,8 @@ class Garden():
         else:
             return True
 
-
-    def findLastFrost(self):
-        lastFrost = self.forecast.findLastFrost()
-        if self.feedKeys['Last Frost'] and lastFrost:
-            logLastFrost = ('location":{0},"latitude":{1},"longitude":{2},"frostDate":{3}').format(
-                self._parameters['location'],
-                self._parameters['latitude'],
-                self._parameters['longitude'],
-                lastFrost)
-            logLastFrost = '{'+logLastFrost+'}'
-            lfData=Data(value=logLastFrost)
-            dag_adafruit.createData(self.feedKeys['Last Frost'], lfData)
-        return lastFrost
-    
-    def findFirstFrost(self):
-        firstFrost = self.forecast.findFirstFrost()
+    def findFirstFrost(self, garden):
+        firstFrost = garden.findFirstFrost()
         if self.feedKeys['First Frost'] and firstFrost:
             logFirstFrost = ('location":{0},"latitude":{1},"longitude":{2},"frostDate":{3}').format(
                 self._parameters['location'],
@@ -99,12 +83,21 @@ class Garden():
             lfData=Data(value=logFirstFrost)
             dag_adafruit.createData(self.feedKeys['First Frost'], lfData)
         return firstFrost
-        
+
+    def findLastFrost(self, garden):
+        lastFrost = garden.findLastFrost()
+        if self.feedKeys['Last Frost'] and lastFrost:
+            logLastFrost = ('location":{0},"latitude":{1},"longitude":{2},"frostDate":{3}').format(
+                self._parameters['location'],
+                self._parameters['latitude'],
+                self._parameters['longitude'],
+                lastFrost)
+            logLastFrost = '{'+logLastFrost+'}'
+            lfData=Data(value=logLastFrost)
+            dag_adafruit.createData(self.feedKeys['Last Frost'], lfData)
+        return lastFrost
 
 if __name__ == '__main__':
     import sys
     garden = Garden(float(sys.argv[1]), float(sys.argv[2]), str(sys.argv[3]))
     garden.runGarden()
-    #print(garden)
-    garden.findFirstFrost()
-    #forecastFrost()

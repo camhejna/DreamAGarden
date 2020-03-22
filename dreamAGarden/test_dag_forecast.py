@@ -1,5 +1,5 @@
 import unittest
-import dag_forecast
+from dag_forecast import DAG_Forecast
 
 class dag_forecastTest(unittest.TestCase):
 
@@ -82,17 +82,20 @@ class dag_forecastTest(unittest.TestCase):
     }
 
     def test_retrieveForecast(self):
-        validLocation = dag_forecast.retrieveForecast(self.mTestLat, self.mTestLon)
+        df = DAG_Forecast(self.mTestLat, self.mTestLon)
+        validLocation = df.retrieveForecast()
         self.assertEqual(True, validLocation != None)
         self.assertEqual(self.mTestLat, validLocation['latitude'])
         self.assertEqual(self.mTestLon, validLocation['longitude'])
 
     def test_retrieveForecast_badLocation(self):
         with self.assertRaises(IOError):
-            dag_forecast.retrieveForecast(500.0000, -500.000)
+            df = DAG_Forecast(500.000, -5000.000)
+            df.retrieveForecast()
 
     def test_retrieveFutureForecast(self):
-        forecast = dag_forecast.retrieveFutureForecast(self.mTestLat, self.mTestLon, self.mTestDays)
+        df = DAG_Forecast(self.mTestLat, self.mTestLon)
+        forecast = df.retrieveFutureForecast(daysToForecast=self.mTestDays)
         self.assertEqual(self.mTestDays, len(forecast))
     '''
     def test_retrieveFutureForecast_moreThanSixtyDays(self):
@@ -101,10 +104,12 @@ class dag_forecastTest(unittest.TestCase):
     '''
 
     def test__findFirstFront(self):
-        firstFrost = dag_forecast._findFirstFrost(self.mTestFistFrost)
+        df = DAG_Forecast(self.mTestLat, self.mTestLon)
+        firstFrost = df._findFirstFrost(self.mTestFistFrost)
         self.assertEqual('2020-01-04T00:00:00', firstFrost)
 
     def test__findLastFrost(self):
-        lastFrost = dag_forecast._findLastFrost(self.mTestLastFrost)
+        df = DAG_Forecast(self.mTestLat, self.mTestLon)
+        lastFrost = df._findLastFrost(self.mTestLastFrost)
         self.assertEqual('2020-01-04T00:00:00', lastFrost)
         
