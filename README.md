@@ -52,11 +52,14 @@ See the [documentation](https://adafruit-io-python-client.readthedocs.io/en/late
 
 * [FarmBot Docs](https://software.farm.bot/docs)
 
-## Commands ##
+### Commands ###
 
 Command | Descriptions
 ------- | ------------
-pcmanfm | open file as root
+pcmanfm | open file system browser as root
+shutdown | ...
+poweroff | ...
+reboot | ...
 
 [version]: https://img.shields.io/badge/v-0.1-blue
 [python-version]: https://img.shields.io/badge/python-3.7-yellow
