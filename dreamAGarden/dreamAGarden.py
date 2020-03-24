@@ -73,6 +73,7 @@ class Garden():
 
         # Log results
         self._logLastExecution()
+        self._logSoilConditions()
         print('\nEnd of Garden\n\n\n----------------------------------------------------------\n\n')
 
     def needsWater(self):
