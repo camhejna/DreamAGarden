@@ -5,12 +5,13 @@ from datetime import datetime as dt
 from datetime import date
 from darksky import forecast
 from Adafruit_IO import Client, Feed, Data
-#from soilMonitor import readSensor
+from soilMonitor import readSensor
 # import y from temperatureHumiditySensor
 # import z from waterPump
 import dag_adafruit
 from dag_forecast import DAG_Forecast
 from dag_garden import DAG_Garden
+
 import keys
 
 #module vars
@@ -25,6 +26,7 @@ class Garden():
         #TODO:fix inconsistency in class vars here
         self._parameters = dict(latitude=latitude, longitude=longitude, location=location)
         self.forecast = DAG_Forecast(self._parameters['latitude'],self._parameters['longitude'])
+        self.soilConditions = readSensor()
         self.feedKeys = {}
         for f in dag_adafruit.getFeeds():
             self.feedKeys[f.name] = f.key
@@ -36,6 +38,16 @@ class Garden():
             lastExecution = Data(value=((dt.now()).isoformat(timespec='seconds')))
             dag_adafruit.createData(self.feedKeys['Last Execution'], lastExecution)
 
+    def _logSoilConditions(self):
+        """Logs the soil temperature and moisture data from the 
+        sensor to the relevant Adafruit IO feeds."""
+        if self.feedKeys['Soil Temperature']:
+            st = Data(value=str(self.soilConditions['temp']))
+            dag_adafruit.createData(self.feedKeys['Soil Temperature'], st)
+        if self.feedKeys['Soil Moisture']:
+            sm = Data(value=str(self.soilConditions['touch']))
+            dag_adafruit.createData(self.feedKeys['Soil Moisture'], sm)
+
     def runGarden(self):
         """runs through all the components of the garden and
         decides whether or not to water the garden."""
@@ -44,10 +56,7 @@ class Garden():
         weatherConditions = {
             'precipProbability':self.forecast.dailyPrecipProbability
         }
-        soilConditions = {
-            'moisture':300, #TODO: replace w/ actual AIO info
-            'temperature':40
-        }
+        soilConditions = self.soilConditions
         fwc = self.forecast.retrieveFutureForecast
         g = DAG_Garden(
             weatherConditions,
@@ -62,6 +71,7 @@ class Garden():
         print(('First frost: {0}').format(self.findFirstFrost(g)))
         print(('Last frost: {0}').format(self.findLastFrost(g)))
 
+        # Log results
         self._logLastExecution()
         print('\nEnd of Garden\n\n\n----------------------------------------------------------\n\n')
 
