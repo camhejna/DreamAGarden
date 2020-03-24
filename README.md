@@ -36,6 +36,15 @@ See the [documentation](https://adafruit-io-python-client.readthedocs.io/en/late
 
 * [Adafruit Soil Sensor](https://learn.adafruit.com/adafruit-stemma-soil-sensor-i2c-capacitive-moisture-sensor/overview)
 
+### Sensor Routing ###
+
+GPIO # | Pi I/O | sensor I/O | JST PH Color
+------ | ----- | --------- | ------------
+ 1 | 3V3 | VIN | Red
+ 3 | SDA | SDA | White
+ 5 | SCL | SCL | Green
+ 9 | GND | GND | Black
+
 * [AM2302 (wired DHT22) temperature-humidity sensor](https://learn.adafruit.com/dht)
 
 ## General Resources ##
@@ -50,6 +59,8 @@ See the [documentation](https://adafruit-io-python-client.readthedocs.io/en/late
 
 * [Adafruit Pi GPIO Setup](https://learn.adafruit.com/adafruits-raspberry-pi-lesson-4-gpio-setup/overview)
 
+* [Pinout](https://pinout.xyz) - an interactive overview of GPIO on the Pi.
+
 * [FarmBot Docs](https://software.farm.bot/docs)
 
 ### Commands ###
@@ -60,6 +71,7 @@ pcmanfm | open file system browser as root
 shutdown | ...
 poweroff | ...
 reboot | ...
+find | ```sudo find [dir] -iname '*txt*'```
 
 [version]: https://img.shields.io/badge/v-0.1-blue
 [python-version]: https://img.shields.io/badge/python-3.7-yellow
