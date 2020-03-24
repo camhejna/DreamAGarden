@@ -9,7 +9,7 @@ ss = Seesaw(i2c_bus, addr=0x36)
 
 def readSensor():
     # read moisture level through capacitive touch pad
-    touch = ss.moisture_read() * 9/5 + 32
+    touch = ((ss.moisture_read() * 9/5) + 32)
 
     # read temperature from the temperature sensor
     temp = ss.get_temp()
