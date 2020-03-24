@@ -46,5 +46,17 @@ See the [documentation](https://adafruit-io-python-client.readthedocs.io/en/late
 
 * [Raspberry Pi SSH for MacOS](https://www.raspberrypi.org/documentation/remote-access/ssh/unix.md)
 
+* [GPIO Zero](https://gpiozero.readthedocs.io/en/stable/remote_gpio.html)
+
+* [Adafruit Pi GPIO Setup](https://learn.adafruit.com/adafruits-raspberry-pi-lesson-4-gpio-setup/overview)
+
+* [FarmBot Docs](https://software.farm.bot/docs)
+
+## Commands ##
+
+Command | Descriptions
+------- | ------------
+pcmanfm | open file as root
+
 [version]: https://img.shields.io/badge/v-0.1-blue
 [python-version]: https://img.shields.io/badge/python-3.8.2-yellow
