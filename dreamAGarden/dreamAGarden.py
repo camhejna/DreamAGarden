@@ -57,7 +57,7 @@ class Garden():
             'precipProbability':self.forecast.dailyPrecipProbability
         }
         soilConditions = self.soilConditions
-        fwc = self.forecast.retrieveFutureForecast
+        fwc = self.forecast.retrieveFutureForecast()
         g = DAG_Garden(
             weatherConditions,
             soilConditions,
