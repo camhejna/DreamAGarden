@@ -59,4 +59,4 @@ Command | Descriptions
 pcmanfm | open file as root
 
 [version]: https://img.shields.io/badge/v-0.1-blue
-[python-version]: https://img.shields.io/badge/python-3.8.2-yellow
+[python-version]: https://img.shields.io/badge/python-3.7-yellow
