@@ -19,7 +19,8 @@ def readSensor():
 
 if __name__ == '__main__':
     sense = readSensor()
-    printStr = 'temp: {0}, moisture:{1}'
-    printStr.format(sense['temp'], sense['touch'])
-    print(printStr)
+    print(('temp: {0}, moisture: {1}').format(
+        sense['temp'],
+        sense['touch']
+    ))
     
