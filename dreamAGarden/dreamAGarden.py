@@ -68,8 +68,8 @@ class Garden():
         # send log to email/server/TBD
 
         # FOR TESTING IN DEVELOPMENT
-        print(('First frost: {0}').format(self.findFirstFrost(g)))
-        print(('Last frost: {0}').format(self.findLastFrost(g)))
+        # print(('First frost: {0}').format(self.findFirstFrost(g)))
+        # print(('Last frost: {0}').format(self.findLastFrost(g)))
 
         # Log results
         self._logLastExecution()
