@@ -83,9 +83,14 @@ class dag_forecastTest(unittest.TestCase):
     }
     """
 
+    def setup(self) -> None:
+        self.df = DAG_Forecast(self.mTestLat, self.mTestLon)
+
+    def tearDown(self) -> None:
+        pass
+
     def test_retrieveForecast(self):
-        df = DAG_Forecast(self.mTestLat, self.mTestLon)
-        validLocation = df.retrieveForecast()
+        validLocation = self.df.retrieveForecast()
         self.assertEqual(True, validLocation != None)
         self.assertEqual(self.mTestLat, validLocation['latitude'])
         self.assertEqual(self.mTestLon, validLocation['longitude'])
@@ -96,12 +101,10 @@ class dag_forecastTest(unittest.TestCase):
             df.retrieveForecast()
 
     def test_retrieveFutureForecast(self):
-        df = DAG_Forecast(self.mTestLat, self.mTestLon)
-        forecast = df.retrieveFutureForecast(daysToForecast=self.mTestDays)
+        forecast = self.df.retrieveFutureForecast(daysToForecast=self.mTestDays)
         self.assertEqual(self.mTestDays, len(forecast))
-    '''
+    
+    @unittest.skip('LargeAPI')
     def test_retrieveFutureForecast_moreThanSixtyDays(self):
-        forecast = dag_forecast.retrieveFutureForecast(self.mTestLat, self.mTestLon, 11)
+        forecast = self.df.retrieveFutureForecast(11)
         self.assertEqual(10, len(forecast))
-    '''
-        

@@ -9,3 +9,7 @@ class dag_gardenTest(unittest.TestCase):
     badSoilCond = {}
     goodFutureWeather = {}
     badFutureWeather = {}
+
+    def setup(self):
+        pass
+    
