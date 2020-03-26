@@ -19,6 +19,17 @@ pip3 install -r requirements.txt
 pip3 install -r requirements-dev.txt
 ```
 
+### API Keys ###
+
+A ```keys.py``` module is required for storing API key information. Copy the following
+format, replacing the placeholder text with actual keys.
+
+```python
+darksky = 'DARK_SKY_API_KEY'
+adausr = 'ADAFRUIT_IO_USERNAME'
+adafruit = 'ADAFRUIT_IO_API_KEY'
+```
+
 ## Dependencies ##
 
 * [darkskylib](https://github.com/lukaskubis/darkskylib) - a python library for
@@ -36,7 +47,8 @@ See the [documentation](https://adafruit-io-python-client.readthedocs.io/en/late
 
 * [Adafruit Soil Sensor](https://learn.adafruit.com/adafruit-stemma-soil-sensor-i2c-capacitive-moisture-sensor/overview)
     * Moisture reading ranges from about 200 (very dry) to 2000 (very wet). 
-    * Ambient temperature from the internal temperature sensor on the microcontroller is not high precision, maybe good to + or - 2 degrees Celsius.
+    * Ambient temperature from the internal temperature sensor on the microcontroller
+    is not high precision, maybe good to + or - 2 degrees Celsius.
 
 ### Sensor Routing ###
 
