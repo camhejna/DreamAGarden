@@ -81,15 +81,15 @@ GPIO # | Pi I/O | sensor I/O | JST PH Color
 
 Keeping a log of useful commands so I don't forget or have to re-look up.
 
-Command | Descriptions
-------- | ------------
-```pcmanfm``` | open (pi) file system browser as root
-```shutdown``` | ...
-```poweroff``` | ...
-```reboot``` | ...
-```find``` | ```sudo find [dir] -iname '*txt*'```
-```readlink``` | Show full file path. Use: ```readlink -f 'file'```
-```crontab``` | edit the Cron table, ```-e``` to edit, ```-l``` to show active.
+Command | Descriptions | Notes
+------- | ------------ | -----
+```pcmanfm``` | open (pi) file system browser as root | 
+```shutdown``` |... | 
+```poweroff``` | ... | 
+```reboot``` | ... | 
+```find``` | ```sudo find [dir] -iname '*txt*'``` | 
+```readlink``` | Show full file path. Use: ```readlink -f 'file'``` | 
+```crontab``` | edit the Cron table, ```-e``` to edit, ```-l``` to show active. | [Pi documentation](https://www.raspberrypi.org/documentation/linux/usage/cron.md)
 
 
 [version]: https://img.shields.io/badge/v-0.1.1-blue
