@@ -83,4 +83,4 @@ Command | Descriptions
 
 [version]: https://img.shields.io/badge/v-0.1-blue
 [python-version]: https://img.shields.io/badge/python-3.7-yellow
-[build]: https://github.com/camhejna/DreamAGarden/workflows/build/badge.svg
+[build]: https://img.shields.io/github/workflow/status/camhejna/dreamAGarden/build
