@@ -35,6 +35,8 @@ See the [documentation](https://adafruit-io-python-client.readthedocs.io/en/late
 ## I/O Components ##
 
 * [Adafruit Soil Sensor](https://learn.adafruit.com/adafruit-stemma-soil-sensor-i2c-capacitive-moisture-sensor/overview)
+    * Moisture reading ranges from about 200 (very dry) to 2000 (very wet). 
+    * Ambient temperature from the internal temperature sensor on the microcontroller is not high precision, maybe good to + or - 2 degrees Celsius.
 
 ### Sensor Routing ###
 
