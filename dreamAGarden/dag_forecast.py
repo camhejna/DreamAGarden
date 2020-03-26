@@ -3,13 +3,14 @@ DarkSky API'''
 
 from datetime import datetime as dt
 from datetime import timedelta
-from datetime import date
+# from datetime import date
 from darksky import forecast
 import keys
 
 mDSK = keys.darksky
 mDaysToForecast = 10
 mTimeMachineMax = 10
+
 
 class DAG_Forecast():
 
@@ -31,7 +32,8 @@ class DAG_Forecast():
         """Returns a Dark Sky Time Machine Request for the given latitude,
         longitude and for the number of days to forecast up to 10
         (Dark Sky Time Machine maximum).
-        :param int daysToForecast: number of days to forecast. Integers greater than 10 will be set to 10."""
+        :param int daysToForecast: number of days to forecast. Integers
+        greater than 10 will be set to 10."""
         if daysToForecast > self.timeMachineMax:
             daysToForecast = mTimeMachineMax
         today = dt.today()
@@ -43,7 +45,7 @@ class DAG_Forecast():
                 frost = forecast(*location, time=dateF)
                 daysForecast[dateF] = frost
             except Exception as e:
-                #throw exception for bad values (lat/long)
+                # throw exception for bad values (lat/long)
                 raise e
             finally:
                 pass
@@ -54,5 +56,6 @@ class DAG_Forecast():
         instance coordinates."""
         return self.retrieveForecast()['daily']['data'][0]['precipProbability']
 
+
 if __name__ == '__main__':
-    import sys
+    pass
