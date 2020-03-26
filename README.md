@@ -94,3 +94,7 @@ Command | Descriptions | Notes
 
 [version]: https://img.shields.io/badge/v-0.1.1-blue
 [python-version]: https://img.shields.io/badge/python-3.7-yellow
+
+## Front-End ##
+
+For the front-end application, see the [DAG-Online](https://github.com/camhejna/DAG-Online) repository.
