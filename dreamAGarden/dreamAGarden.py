@@ -5,7 +5,7 @@ from datetime import datetime as dt
 from datetime import date
 from darksky import forecast
 from Adafruit_IO import Client, Feed, Data
-from soilMonitor import readSensor
+from cmp_soilMonitor import readSensor
 # import y from temperatureHumiditySensor
 # import z from waterPump
 import dag_adafruit
