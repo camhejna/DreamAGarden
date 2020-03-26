@@ -80,5 +80,5 @@ Command | Descriptions
 ```crontab``` | edit the Cron table, ```-e``` to edit, ```-l``` to show active.
 
 
-[version]: https://img.shields.io/badge/v-0.1-blue
+[version]: https://img.shields.io/badge/v-0.1.1-blue
 [python-version]: https://img.shields.io/badge/python-3.7-yellow
